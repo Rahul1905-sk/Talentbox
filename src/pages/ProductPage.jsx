@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import ProductCard from "../components/ProductCard";
-
+import axios from 'axios'
+import { useState } from "react";
 const ProductPage = () => {
+
+
+  const [data, setData] = useState([])
+
+useEffect(() => {
+  getData()
+}, [])
+
+
+  const getData = async() => {
+    let res = await axios.get('https://puce-fine-moose.cyclic.app/course/')
+    console.log(res)
+    setData(res.data)
+  }
+
+
+
   return (
     <>
       <Navbar />
@@ -22,23 +40,8 @@ const ProductPage = () => {
         </Text>
 
         <Stack my={"50px"}>
-          <ProductCard
-            data={"(New) Responsive Web Design Certification (300 hours)"}
-          />
-          <ProductCard
-            data={"Legacy Responsive Web Design Certification (300 hours)"}
-          />
-          <ProductCard
-            data={
-              "Javascript Algorithms and Data Structures Certification (300 hours)"
-            }
-          />
-          <ProductCard
-            data={"Front End Development Libraries Certification (300 hours)"}
-          />
-          <ProductCard
-            data={"Back End Development and APIs Certification (300 hours)"}
-          />
+        
+           {data.map((e,ind)=> <ProductCard key={e+ind}  data={e}/>)}
         </Stack>
       </Stack>
     </>
